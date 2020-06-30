@@ -172,7 +172,7 @@
                         </Grid>
                     </GroupBox>
                 </Grid>
-                <Button HorizontalAlignment="Left" Margin="11,76,0,0" Click="UpdateSettingsClick" VerticalAlignment="Top" Width="75" Height="29">
+                <Button HorizontalAlignment="Left" Margin="11,76,0,0" ToolTip="Retrievs the settings from the Switch (In case you physically interacted with it)" Click="UpdateSettingsClick" VerticalAlignment="Top" Width="75" Height="29">
                     <Viewbox Grid.Column="0" Stretch="Uniform">
                         <TextBlock Margin="8">Update</TextBlock>
                     </Viewbox>
