@@ -1,0 +1,183 @@
+﻿<Window x:Class="AtenHdmiSwitch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AtenHdmiSwitch"
+        mc:Ignorable="d"
+        Title="ATEN VanCryst VS481C Utility" Height="342" Width="405" MinHeight="360" MinWidth="480" WindowStyle="None">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="16" ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+    </WindowChrome.WindowChrome>
+    <Border Style="{StaticResource WindowMainPanelStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="16*" />
+                <RowDefinition Height="344*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Width="12" Height="12" Margin="4" />
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Margin="4 0 0 0" VerticalAlignment="Center" FontSize="12" Text="ATEN VanCryst VS481C Utility">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                                <Setter Property="Foreground" Value="White" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Button Grid.Column="2"
+		Click="OnMinimizeButtonClick"
+		RenderOptions.EdgeMode="Aliased"
+        Style="{StaticResource TitleBarButtonStyle}">
+                <Path Width="23" Height="16" Data="M 18,12 H 6" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1" />
+            </Button>
+            <Button Name="maximizeButton" Grid.Column="3" Click="OnMaximizeRestoreButtonClick" Style="{StaticResource TitleBarButtonStyle}">
+                <Path Width="23" Height="16" Data="M 7.5,4.5 H 16.5 V 13.5 H 7.5 Z" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1" />
+            </Button>
+            <Button
+		Name="restoreButton" Grid.Column="3" Click="OnMaximizeRestoreButtonClick" Style="{StaticResource TitleBarButtonStyle}">
+                <Path Width="23" Height="16" Data="M 7.5,6.5 H 14.5 V 13.5 H 7.5 Z M 9.5,6.5 V 4.5 H 16.5 V 11.5 H 14.5" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1" />
+            </Button>
+            <Button Grid.Column="4" Click="OnCloseButtonClick" Style="{StaticResource TitleBarCloseButtonStyle}">
+                <Path Width="23" Height="16" Data="M 8,5 15,12 M 8,12 15,5" Stroke="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" StrokeThickness="1" />
+            </Button>
+            <Grid Grid.Row="1" Grid.ColumnSpan="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="115" MaxHeight="115" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="69"><Run Text="Current"/><Run Text=" Port:"/><Run Text=" Port:"/></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="80,10,0,0" TextWrapping="Wrap" Text="{Binding Path=CurrentPort}" VerticalAlignment="Top" Width="15" Height="16" RenderTransformOrigin="-0.616,0.556"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="69"><Run Text="Output Port"/><Run Text=":"/><Run Text=" On:"/></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="80,26,0,0" TextWrapping="Wrap" Text="{Binding Path=OutputPortOn}" VerticalAlignment="Top" Width="40" Height="16"/>
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="16" Width="76"><Run Text="Switch"/><Run Text=" Mode:"/><Run Text=" Mode:"/></TextBlock>
+                <TextBlock HorizontalAlignment="Left" Margin="87,42,0,0" TextWrapping="Wrap" Text="{Binding SwitchMode}" VerticalAlignment="Top" Width="40" Height="16"/>
+
+
+                <TextBlock HorizontalAlignment="Left" Margin="10,58,0,0" TextWrapping="Wrap" Text="Power-On-Detection:" VerticalAlignment="Top" Height="16" Width="112"/>
+                <TextBlock HorizontalAlignment="Left" Margin="127,58,0,0" TextWrapping="Wrap" Text="{Binding PodModeOn}" VerticalAlignment="Top" Width="40" Height="16"/>
+
+                <TextBlock Margin="0,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Height="16" Text="Startup Sttings:"/>
+                <TextBlock Margin="0,31,10,5" TextWrapping="WrapWithOverflow" Text="{Binding Path=SwitchSettingsRaw}" HorizontalAlignment="Right" Width="100"/>
+                <Grid Grid.Row="1" Margin="0,0,0,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Switch Port" Margin="10,5,10,5" Grid.Row="0" Grid.ColumnSpan="3">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="Port1Button" Tag="01" Click="PortSwitchClick" Grid.Column="0" Margin="2">
+                                <Viewbox Stretch="Uniform" Margin="2">
+                                    <TextBlock>1</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="Port2Button" Tag="02" Click="PortSwitchClick" Grid.Column="1" Margin="2">
+                                <Viewbox Stretch="Uniform" Margin="2">
+                                    <TextBlock>2</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="Port3Button" Tag="03" Click="PortSwitchClick" Grid.Column="2" Margin="2">
+                                <Viewbox Stretch="Uniform" Margin="2">
+                                    <TextBlock>3</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="Port4Button" Tag="04" Click="PortSwitchClick" Grid.Column="3" Margin="2">
+                                <Viewbox Stretch="Uniform" Margin="2">
+                                    <TextBlock>4</TextBlock>
+                                </Viewbox>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Output Port" ToolTip="Disables or enables the output." MinHeight="95" Margin="10,5,0,5" Grid.Row="1" Grid.Column="0">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="OutOnButton" Tag="on" Click="OutPortClick" Margin="2" >
+                                <Viewbox Grid.Column="0" Stretch="Uniform">
+                                    <TextBlock  Margin="8">On</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="OutOffButton" Tag="off" Click="OutPortClick" Grid.Column="1" Margin="2" >
+                                <Viewbox Grid.Column="0" Stretch="Uniform">
+                                    <TextBlock Margin="8">Off</TextBlock>
+                                </Viewbox>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Priority" ToolTip="The VS481C switches to and only displays the source from the selected port as soon as it detects a signal. This can be used if a specific source should always replace all others if switched on. Switching this option On will use the currently selected Port. Next is the default. Off will disable any automatic switching." MinHeight="95" Margin="5,5" Grid.Row="1" Grid.Column="1">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="PriorityOnButton" Tag="next" Grid.Column="0"  Click="PriorityClick" Margin="2" >
+                                <Viewbox Stretch="Uniform">
+                                    <TextBlock  Margin="8">Next</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="PriorityNextButton"  Grid.Column="1" Tag="on" Click="PriorityClick" Margin="2" >
+                                <Viewbox Stretch="Uniform">
+                                    <TextBlock  Margin="8">On</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="PriorityOffButton" Tag="off" ToolTip="This will disable any automatic switching." Grid.Column="2" Click="PriorityClick" Margin="2" >
+                                <Viewbox Stretch="Uniform">
+                                    <TextBlock Margin="8">Off</TextBlock>
+                                </Viewbox>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Power-On-Detection" ToolTip="Allows the VS481C to automatically switch to the next port with a powered-on source device when the currently connected device is powered off. This mode works independently of the other modes." MinHeight="95" Margin="0,5,10,5" Grid.Row="1" Grid.Column="2">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="PodOnButton" Tag="on" Click="PodClick" Margin="2" >
+                                <Viewbox Grid.Column="0" Stretch="Uniform">
+                                    <TextBlock  Margin="8">On</TextBlock>
+                                </Viewbox>
+                            </Button>
+                            <Button x:Name="PodOffButton" Tag="off" Click="PodClick" Grid.Column="1" Margin="2" >
+                                <Viewbox Grid.Column="0" Stretch="Uniform">
+                                    <TextBlock Margin="8">Off</TextBlock>
+                                </Viewbox>
+                            </Button>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+                <Button HorizontalAlignment="Left" Margin="11,76,0,0" Click="UpdateSettingsClick" VerticalAlignment="Top" Width="75" Height="29">
+                    <Viewbox Grid.Column="0" Stretch="Uniform">
+                        <TextBlock Margin="8">Update</TextBlock>
+                    </Viewbox>
+                </Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
